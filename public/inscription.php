@@ -22,13 +22,8 @@ catch(PDOException $e){
 */
 
 /* Connexion à une base MySQL avec l'invocation de pilote */
-try{
-    $bdd=new PDO("mysql:host=localhost;dbname=devme","root","root");
- }
- catch(PDOException $e){
-    echo $e->getMessage();
- }
 
+include 'database.php';
 
 if(isset($_POST['formulaireinscription']))
 { 
@@ -48,9 +43,29 @@ if(isset($_POST['formulaireinscription']))
         $mdp = htmlspecialchars($_POST['password']);
         $mdp= sha1($_POST['password']);
 
+        // verification que l'email entré par l'utilisateur n'existe pas déjà dans la base de données.
+
+        $verification = $bdd->prepare("SELECT email FROM users WHERE email = :email");
+        $verification->execute(['email' => $email]);
+        $resultats = $verification->rowCount();
+
+        // la fonction rowCount retourne le nombre de lignes affectées par la dernière requête DELETE, INSERT ou UPDATE exécutée par l'objet PDOStatement correspondant.
+
+        // on affiche le résultat (pour débuguer)
+
+        echo $resultats;
+
+        // la condition if nous permet de vérifier si l'email existe déjà ou non dans la bdd
+
+        if($resultats == 0){
+
         $insertmbr = $bdd->prepare("INSERT INTO users(email, nom, prenom, avatar, motdepasse) VALUES(?,?,?,?,?)");
         $insertmbr->execute(array($email, $nom, $prenom, $avatar, $mdp));
         var_dump($_POST);
+        echo "Le compte a été crée";
+        } else {
+        echo "Un email existe déjà";
+        }
 
     }
     else
@@ -102,5 +117,6 @@ if(isset($_POST['formulaireinscription']))
         </table>
         <input type="submit" value="S'inscrire" name="formulaireinscription">
     </form>
+    <a href="connexion.php"> Se connecter </a>
 
 </div>
