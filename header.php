@@ -1,4 +1,24 @@
+<?php 
+
+
+$requestUri = $_SERVER["REQUEST_URI"];
+
+$isMenu = true;
+
+if($requestUri === '/connexion.php') {
+    $isMenu = false;
+}
+if($requestUri === '/inscription.php') {
+    $isMenu = false;
+}
+if($requestUri === '/contact.php') {
+    $isMenu = false;
+}
+
+?>
+
 <!DOCTYPE html>
+
 <html lang="fr">
 
 <head>
@@ -12,13 +32,22 @@
 
 <body>
 
-    <header>
+    <header >
 
-    <?php if(empty($_SESSION['id'])) {
-        include ('menu_public.php');
-    } else {
-        include ('menu_privee.php');
-    }
-    ?>
+    <?php if($isMenu) : ?>
+        <div class="header">
+            <?php
+                if($isMenu) {
+                    if(empty($_SESSION['id'])){
+                        include('menu_public.php');
+                    } else { 
+                        include('menu_privee.php');
+                    }
+                }
+            ?>
+        </div>
+    <?php endif; ?>
+
+    </div>
 
     </header>

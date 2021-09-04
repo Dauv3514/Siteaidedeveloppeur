@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -7,7 +6,7 @@ require("../header.php");
 
 include 'database.php';
 
-// on vérifie que la variable id existe bien (puis voir si l variable est superieur à 0)
+// on vérifie que la variable id existe bien (puis voir si la variable est superieur à 0)
 
 
 if(isset($_GET['id']) AND $_GET['id'] > 0)
@@ -53,6 +52,10 @@ var_dump($afficherprofil);
     <?php
     }
     ?>
+
+    <h1> DEV ME - Outil d'aide à la conception de sites </h1>
+    <img src="images/arriereplandevme.jpg">
+    
 </div>
 
 

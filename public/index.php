@@ -1,6 +1,8 @@
-<?php require("../header.php") ?>
+<?php include("../header.php") ?>
 
+<div class="accueil">
 <h1> DEV ME - Outil d'aide à la conception de sites </h1>
-<img src="images/arriereplandevme.jpg"
+<img class="imagefond" src="images/arriereplandevme.jpg">
+</div>
 
-<?php require("../footer.php") ?>
+<?php include("../footer.php") ?>

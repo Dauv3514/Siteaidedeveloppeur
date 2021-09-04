@@ -2,99 +2,151 @@
 
 session_start();
 
+require '../vendor/autoload.php';
+
+require("../header.php");
+
 include 'database.php';
 
-    // if(isset($_POST['formulaireconnexion']))
 
-    // { 
-    //     if(!empty($_POST['eemail']) 
-    //     AND !empty($_POST['ppassword']))
-    //     {
-    //     echo "ok";
+// $_SESSION["auth"]["test"] = "bonjour";
+// unset($_SESSION["auth"]);
+// dump($_SESSION);
 
-    //     // requete permettant de recuperer tous les elements de la base de données (on match les 2 pour la connexion)
 
-    //     $requete = $bdd->prepare("SELECT email FROM users WHERE email = :email");
-    //     $requete->execute(['email' => $mailbdd]);
-    //     var_dump($requete);
-    //     $resultat = $requete->fetchAll();
-    //     var_dump($resultat);
+// if(isset($_POST['formulaireconnexion']))
 
-    //     }
-    //     else
-    //     { 
-    //         echo "veuillez complèter tous les champs";
-    //     }
-    // }
+// { 
+//     if(!empty($_POST['eemail']) 
+//     AND !empty($_POST['ppassword']))
+//     {
+//     echo "ok";
 
-    $erreur = null; 
+//     // requete permettant de recuperer tous les elements de la base de données (on match les 2 pour la connexion)
 
-    if(isset($_POST['formulaireconnexion'])) {
+//     $requete = $bdd->prepare("SELECT email FROM users WHERE email = :email");
+//     $requete->execute(['email' => $mailbdd]);
+//     var_dump($requete);
+//     $resultat = $requete->fetchAll();
+//     var_dump($resultat);
 
-    $eemail = htmlspecialchars($_POST['eemail']);
-    $ppassword = sha1($_POST['ppassword']);
+//     }
+//     else
+//     { 
+//         echo "veuillez complèter tous les champs";
+//     }
+// }
 
-    if(!empty($_POST['eemail']) && !empty($_POST['ppassword'])) {
 
-    // on verifie que l'email et le mot de passe corresponde dans la bdd
-        $verificationutilisateur = $bdd->prepare("SELECT * FROM users WHERE email = ? AND motdepasse = ?");
-        $verificationutilisateur->execute(array($eemail, $ppassword));
-        // la fonction rowCount retourne le nombre de lignes affectées par la dernière requête DELETE, INSERT ou UPDATE exécutée par l'objet PDOStatement correspondant.
-        $utilisateurexiste = $verificationutilisateur->rowCount();
-        // si l'utilisateur existe on va chercher l'utilisateur avec le fetch (on va recevoir les infos)
-        if($utilisateurexiste == 1){
+$pass = 'bonjour';
 
-            // on démarre la session de l'utilisateur une fois qu'il est connecté et on récupere les variables de la session, comme l'id, l'email et le mot de passe (concernant cet utilisateur)
+$pass1 = password_hash($pass, PASSWORD_DEFAULT);
 
-            $sessionutilisateur = $verificationutilisateur->fetch();
-            // l'utilisateur existe dans la table
-            // on ajoute ses infos en tant que variables de session
-            $_SESSION['id'] = $sessionutilisateur['id'];
-            $_SESSION['email'] = $sessionutilisateur['email'];
-            $_SESSION['motdepasse'] = $sessionutilisateur['motdepasse'];
-            // on redirige l'utilisateur connecté vers son profil
-            header("Location: profil.php?id=".$_SESSION['id']);
+//echo $pass1;
 
-        } else 
-        {
-            $erreur = "Mauvais mail ou mot de passe";
-        }
+$isverify = password_verify($pass, '$2y$10$ar6vEPWEO3DdhXOZlgO1XumNYpRFMcXGy7fv01wUKDsyb8ivGauGK'
+);
+
+//echo $isverify ;
+
+//var_dump($isverify);
+
+/*  GESTION DES ERREURS EN PHP (mais problème, à chaque affichage d'une erreur la page se recharge. Donc il faut faire ça en Java Script)
+
+if (isset($_POST['formulaireconnexion'])) {
+
+    if (empty($_POST['eemail']))  {
+
+        var_dump($_POST);
+
+        $erreurmail = "Veuillez entrer un e-mail";
 
     }
 
-}
+    if (empty($_POST['ppassword']))  {
+
+        var_dump($_POST);
+
+        $erreurpassword = "erreur password"; 
+
+    }
+
+} */
 
 
-    ?>
 
-    <?php if ($erreur): ?>
+
+?>
+
+<?php if ($erreur) : ?>
     <div class="alert alert-danger">
         <?= $erreur ?>
     </div>
-    <?php endif ?>
+<?php endif ?>
 
+<?php if($erreurmail) : ?>
+    <div class="alert alert-danger">
+        <?= $erreurmail ?>
+    </div>
+<?php endif ?>
+
+<?php if($erreurpassword) : ?>
+    <div class="alert alert-danger">
+        <?= $erreurpassword ?>
+    </div>
+<?php endif ?>
 
 
 
 <div class="connexion">
-    <h1> Connexion </h1>
-    <br><br>
-    <form method="POST" action="">
-        <table>
-            <tr>
-                <td>
-                <label for="eemail"> Email : </label>
-                <input type="email" placeholder="Entrez votre addresse mail" id="eemail" name="eemail">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                <label for="ppassword"> Mot de passe : </label>
-                <input type="password" placeholder="Entrez votre mot de passe" id="ppassword" name="ppassword">
-                </td>
-            </tr>
-        </table>
-        <input type="submit" name="formulaireconnexion" value="Se connecter">
-    </form>
 
+        <div class="axe">
+
+        <h1 class="h3 mb-3 font-weight-normal">
+				Se connecter
+		</h1>
+
+			<div class="container">
+
+				<div class="milieu2">
+
+					<form method="post" id="formconnexion" action="">
+
+						<div class="adresseemail">
+                            <label for="eemail"> Email : </label>
+                            <input type="email" placeholder="Entrez votre addresse mail" id="eemail" name="eemail" value="<?= htmlspecialchars($_POST['eemail'])?>">
+                            <p id="error_mail"></p>
+
+						</div>
+
+						<div class="motdepasse">
+
+                            <label for="ppassword"> Mot de passe : </label>
+                            <input type="password" placeholder="Entrez votre mot de passe" id="ppassword" name="ppassword" value="<?= htmlspecialchars($_POST['ppassword'])?>">
+                            <p id="error_password"></p>
+                            <p id="error_badpassword"></p>
+
+						</div>
+
+						<div class="motdepasseoublie">
+
+							<a href="">
+								Mot de passe oublié ?
+							</a>
+
+						</div>
+
+                        <input class="btn btn-lg btn-danger" type="submit"  name="formulaireconnexion" value="Se connecter">
+                </form>
+
+            </div>
+        </div>
+    </div>  
 </div>
+
+
+<script type="text/javascript" src="erreurconnexion.js"></script>
+
+
+
+

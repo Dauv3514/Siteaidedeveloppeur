@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '610f6440ca8d682c5fc09c2c7f4d4cdcdcb05657',
+    'reference' => '0a0788bf9e9f7bd17f451411346dd8f7c3a80976',
     'name' => '__root__',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '610f6440ca8d682c5fc09c2c7f4d4cdcdcb05657',
+      'reference' => '0a0788bf9e9f7bd17f451411346dd8f7c3a80976',
     ),
     'cordoval/hamcrest-php' => 
     array (
@@ -151,6 +151,33 @@
       array (
       ),
       'reference' => '120b605dfeb996808c31b6477290a714d356e822',
+    ),
+    'symfony/polyfill-mbstring' => 
+    array (
+      'pretty_version' => 'v1.23.1',
+      'version' => '1.23.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9174a3d80210dca8daa7f31fec659150bbeabfc6',
+    ),
+    'symfony/polyfill-php80' => 
+    array (
+      'pretty_version' => 'v1.23.1',
+      'version' => '1.23.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '1100343ed1a92e3a38f9ae122fc0eb21602547be',
+    ),
+    'symfony/var-dumper' => 
+    array (
+      'pretty_version' => 'v5.3.6',
+      'version' => '5.3.6.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '3dd8ddd1e260e58ecc61bb78da3b6584b3bfcba0',
     ),
   ),
 );
