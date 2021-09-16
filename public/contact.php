@@ -30,6 +30,9 @@ if (isset($_POST['formulairecontact'])) {
 
 <div class="contact">
     <h1> Contact </h1>
+    <div id="centrageimage">
+    <img src="images/logodev.png" alt="Logo du site" />
+    </div>
     <br><br>
     <div class="contacter">
         <div class="container3">

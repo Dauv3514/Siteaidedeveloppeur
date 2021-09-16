@@ -79,6 +79,9 @@ if (isset($_POST['formulaireinscription'])) {
 
 <div class="inscriptionsite">
     <h1> Inscription </h1>
+    <div id="centrageimage">
+    <img src="images/logodev.png" alt="Logo du site" />
+    </div>
     <br><br>
     <div class="inscription">
         <div class="container2">

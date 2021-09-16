@@ -106,6 +106,10 @@ if (isset($_POST['formulaireconnexion'])) {
 				Se connecter
 		</h1>
 
+        <div id="centrageimage">
+        <img src="images/logodev.png" alt="Logo du site" />
+        </div>
+
 			<div class="container">
 
 				<div class="milieu2">

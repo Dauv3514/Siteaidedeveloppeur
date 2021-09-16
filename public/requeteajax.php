@@ -185,9 +185,6 @@ echo json_encode($reponse);
 
 
 
-
-
-
 // On encode en json pour pouvoir récuper la variable plus facilement après. Transformation du PHP vers le Java Script.
 
 // echo json_encode($erreurmdpmail);

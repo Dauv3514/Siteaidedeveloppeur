@@ -14,6 +14,12 @@ if($requestUri === '/inscription.php') {
 if($requestUri === '/contact.php') {
     $isMenu = false;
 }
+if($requestUri === '/programmedaide.php') {
+    $isMenu = false;
+}
+if($requestUri === '/ajouttache.php') {
+    $isMenu = false;
+}
 
 ?>
 
