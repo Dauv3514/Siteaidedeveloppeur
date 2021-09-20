@@ -6,19 +6,18 @@ require '../vendor/autoload.php';
 
 include 'database.php';
 
-//insertion en base de données d'une veille google
 
+//insertion en base de données d'une veille google
 $lien = $_POST['liengoogle'];
 $image = $_POST['imagegoogle'];
-$msg ="Veuillez entrer un mail valide"; 
 $session = 0;
 $success = 0;
 
 
     if (!empty($_POST['liengoogle']) AND !empty($_POST['imagegoogle'])) {
 
-        $lien = htmlspecialchars($_POST['liengoogle']);
-        $image = htmlspecialchars($_POST['imagegoogle']);
+        $lien = $_POST['liengoogle'];
+        $image = $_POST['imagegoogle'];
         $userid = $_SESSION['id'];
         $session = 1;
 
@@ -36,7 +35,6 @@ $reponse = [
     "success" => $success,
     "lien" => $lien,
     "image" => $image,
-    "message" => $msg,
     "id" => $session,
 
 ];

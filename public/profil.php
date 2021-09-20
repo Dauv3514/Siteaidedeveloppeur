@@ -47,8 +47,8 @@ var_dump($afficherprofil);
     
     {
     ?>
-    <a href="editionprofil.php">Editer mon profil</a>
-    <a href="deconnexion.php">Se déconnecter</a>
+    <a href="editionprofil.php"> Editer mon profil </a>
+    <a href="/deconnexion.php"> Se déconnecter </a>
     <?php
     }
     ?>

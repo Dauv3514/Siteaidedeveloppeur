@@ -1,19 +1,21 @@
-<?php 
+<?php
 
 session_start();
 
-require("../header.php") ;
+require("../header.php");
 
 require '../vendor/autoload.php';
 
 include 'database.php';
 
-if(!empty($_SESSION['id'])) {
+if (!empty($_SESSION['id'])) {
     echo 'utilisateur connecté';
 } else {
     header("Location: connexion.php");
     exit();
 }
+
+// Partie TODOLIST
 
 $id = $_SESSION['id'];
 
@@ -21,77 +23,73 @@ $sql = "SELECT id, titre, photo, deadline, description, user_id FROM todolist WH
 $resultats = $bdd->prepare($sql);
 $resultats->execute();
 $tableauDonnees = $resultats->fetchAll(PDO::FETCH_ASSOC);
-dump($tableauDonnees); 
+dump($tableauDonnees);
 
 ?>
 
-<section classe ="todolist">
+<section classe="todolist">
 
-<div id="ajouttache">
+    <div id="ajouttache">
 
-<div class="ajouttache">
+        <div class="ajouttache">
 
-<h1> Programme d'aide </h1>
+            <h1> Programme d'aide </h1>
 
-<h1> Mes tâches à faire (Todolist) </h1>
+            <h1> Mes tâches à faire (Todolist) </h1>
 
-<a href="ajouttache.php"><button name="button"> Ajouter une tache</button></a>
+            <a href="ajouttache.php"><button name="button"> Ajouter une tache</button></a>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-<div class="placement">
+    <div class="placement">
 
-<div class="taches">
-<?php
+        <div class="taches">
+            <?php
 
-if(count($tableauDonnees) === 0)
-{
-    echo"<p>Aucune donnée à afficher</p>";
-
-} else
-{
-    foreach ($tableauDonnees as $code)
-    {
-
-        $photos = $code["photo"];
-
-        echo"<div class='code'>";
-        echo"<div id='contenu' style='display:block;'>";
-        echo"{$code["titre"]}<br>";
-        echo'<img src="'.$photos.'"/>';
-        echo"{$code["deadline"]}<br>";
-        echo"{$code["description"]}<br>";
-        echo"</div>";
-        echo"<button onclick='cacher();'> Déplacer vers le tableau A faire </button>";
-        echo"<button name='button' id='encours'> Déplacer vers le tableau En cours </button>";
-        echo"<button name='button' id='termine'> Déplacer vers le tableau Terminé </button>";
-        echo"</div>";
+            if (count($tableauDonnees) === 0) {
+                echo "<p>Aucune donnée à afficher</p>";
+            } else
+            {
+            foreach ($tableauDonnees as $code)
+            {
         
-    }
-    
+                $photos = $code["photo"];
+        
+                echo"<div class='code'>";
+                echo"<div id='contenu' style='display:block;'>";
+                echo"{$code["titre"]}<br>";
+                echo'<img src="'.$photos.'"/>';
+                echo"{$code["deadline"]}<br>";
+                echo"{$code["description"]}<br>";
+                echo"</div>";
+                echo"<button onclick='cacher();'> Déplacer vers le tableau A faire </button>";
+                echo"<button name='button' id='encours'> Déplacer vers le tableau En cours </button>";
+                echo"<button name='button' id='termine'> Déplacer vers le tableau Terminé </button>";
+                echo"</div>";
+                
+            }
+            }
 
-}
+            ?>
 
-?>
+        </div>
 
-</div>
+        <div class="afaire">
+            <p> A faire </p>
+            <div id="texteafaire"></div>
+        </div>
 
-<div class="afaire">
-    <p> A faire </p>
-    <div id="texteafaire"></div>
-</div>
+        <div class="encours">
+            <p> En cours </p>
+        </div>
 
-<div class="encours">
-    <p> En cours </p>
-</div>
+        <div class="termine">
+            <p> Terminé </p>
+        </div>
 
-<div class="termine">
-    <p> Terminé </p>
-</div>
-
-</div>
+    </div>
 
 </section>
 
@@ -102,48 +100,105 @@ if(count($tableauDonnees) === 0)
 
 
 
-
+<!-- PARTIE VEILLE -->
 
 
 <h1 id="maveille"> Ma veille effectuée </h1>
 
-<div class="containeryt">
+<div class="containerytgg">
 
-<section class="veillegg">
+    <section class="veillegg">
 
-<div class="veillegoogle">
+        <div class="veillegoogle">
 
-<h3> Veille Google </h3>
+            <h3> Veille Google </h3>
 
-<form method="POST" id="formveillegoogle" name="formveillegoogle">
-<input type="submit" name="formveillegoogle" id="newveille" value="Ajouter une veille" />
+            <div id="formveillegoogle">
+                <button id="newveille"> Ajouter une veille </button>
 
-<div class="liengoogle">
-    <label for="liengoogle"> Insérer un Lien Google : </label>
-    <input type="text" placeholder="Inserer un lien google" id="liengoogle" name="liengoogle">
-</div>
+                <div class="liengoogle">
+                    <label for="liengoogle"> Insérer un Lien Google : </label>
+                    <input type="text" placeholder="Inserer un lien google" id="liengoogle">
+                </div>
 
-<div class="imagegoogle">
-    <label for="imagegoogle"> Insérer une Image Google : </label>
-    <input type="text" placeholder="Inserer une image google" id="imagegoogle" name="imagegoogle">
-</div>
-</form>
+                <div class="imagegoogle">
+                    <label for="imagegoogle"> Insérer une Image Google : </label>
+                    <input type="text" placeholder="Inserer une image google" id="imagegoogle">
+                </div>
+            </div>
 
-</div>
+        </div>
 
 
-<?php
+        <?php
 
-//affichage des données sur la page programmedaide
+        //affichage des données sur la page programmedaide
 
-$id = $_SESSION['id'];
+        $id = $_SESSION['id'];
 
-$requetesql = "SELECT id, user_id, lien, image FROM veillegoogle WHERE user_id='$id'";
-$affichage = $bdd->prepare($requetesql);
-$affichage->execute();
-$tableauDonnees = $affichage->fetchAll(PDO::FETCH_ASSOC);
+        $requetesql = "SELECT id, user_id, lien, image FROM veillegoogle WHERE user_id='$id'";
+        $affichage = $bdd->prepare($requetesql);
+        $affichage->execute();
+        $tableauDonnees = $affichage->fetchAll(PDO::FETCH_ASSOC);
 
-if(count($tableauDonnees) === 0)
+        if (count($tableauDonnees) === 0) {
+            echo "<p> Aucune donnée à afficher </p>";
+            dump($tableauDonnees);
+        } else {
+            foreach ($tableauDonnees as $code) {
+                $images = $code["image"];
+                $liens = $code["lien"];
+                $id = $code["id"];
+
+        ?>
+
+                <div class="affichageveille">
+                    <div id="positionnement">
+                        <div id="affichage">
+
+                            <img id="recimages" src="<?= $images; ?>" />
+
+                            <a id="recliens" href="<?= $liens; ?>'"> Lien vers ma veille </a>
+
+                            <!-- <div name="supprimerveille">
+                                <input type="submit" src="images/croix.png" name="supprimerveille" id="croix" value="X" />
+                                <input type="hidden" name="idveillegg" value="<?= htmlentities($id);  ?>" />
+                            </div>  -->
+
+                            <form method="post" name="supprimerveille">
+                                <input type="submit" src="images/croix.png" name="supprimerveille" id="croixyt" value="X" />
+                                <input type="hidden" name="idveillegg" value="<?= htmlentities($id) ;?>" />
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+        <?php
+
+            }
+        }
+
+        // supprimer une veillegoogle (1 ligne de la base de donnée)
+        
+        
+        if (isset($_POST['supprimerveille'])) {
+
+            $veilleidgg = $_POST['idveillegg'];
+            $params = [
+                'veilleidgg' => $veilleidgg
+            ];
+
+            $supprimer = "DELETE FROM veillegoogle WHERE id= :veilleidgg;";
+            $supprimerveille = $bdd->prepare($supprimer);
+            $suppression = $supprimerveille->execute($params);
+            dump($supprimerveille);
+            dump($_POST);
+        } 
+
+        // ANCIENNE MANIERE D'AFFICHER MES DONNEES
+
+        /* if(count($tableauDonnees) === 0)
 {
     echo"<p>Aucune donnée à afficher</p>";
 
@@ -153,133 +208,123 @@ if(count($tableauDonnees) === 0)
     {
         $images = $code["image"];
         $liens = $code["lien"];
+        $id = $code["id"];
 
         echo"<div class='affichageveille'>";
         echo"<div id='positionnement'>";
         echo"<div id='affichage'>";
         echo'<img src="'.$images.'"/>';
 //      echo"<div id='liens'>";
-//       echo"{$code["lien"]}";
         echo'<a href="'.$liens.'"> Lien vers ma veille </a>';
 //      echo"</div>";
 //      echo"<a href='programmedaide.php'><button type='submit'                 
 //      name='supprimerveille'> <img src='images/croix.png'></button></a>";
-        echo"<form method='post' name='supprimerveille'> 
-            <input type='submit' src='images/croix.png' name='supprimerveille' id='croix' value='X'/>
-            </form>";
+        echo"<form method='post' name='supprimerveille'>";
+        echo"<input type='submit' src='images/croix.png' name='supprimerveille' id='croix' value='X'/>";
+        echo"<input type='hidden' name='idveillegg' value='$id'/>";
+        echo"</form>";
         echo"</div>";
         echo"</div>";
         echo"</div>";
         
     }
     
-}
+} */
 
-// supprimer une veille (1 ligne de la base de donnée)
+        ?>
 
-if(isset($_POST['supprimerveille'])) {
 
-    $requeteid = "SELECT * FROM veillegoogle WHERE id = ...";
-    $recupererid = $bdd->prepare($requeteid);
-    $recupererid->execute();
-    $id = $recupererid->fetchAll();
-    dump($id);
 
-    $supprimer ="DELETE FROM veillegoogle WHERE id = ";
-    $supprimerveille = $bdd->prepare($supprimer);
-    $suppression = $supprimerveille->execute();
-    dump($supprimerveille);
-    echo 'Données supprimées';
-    
-}
 
-?>
-</section>
 
-<section class="veilleyt">
 
-<div class="veilleyoutube">
+    </section>
 
-<h3> Veille Youtube </h3>
+    <section class="veilleyt">
 
-<form method="POST" id="formveilleyoutube" name="formveilleyoutube">
-<input type="submit" name="formveilleyoutube" id="newveilleyt" value="Ajouter une veille" />
+        <div class="veilleyoutube">
 
-<div class="lienyoutube">
-    <label for="lienyoutube"> Insérer un Lien Youtube : </label>
-    <input type="text" placeholder="Inserer un lien youtube" id="lienyoutube" name="lienyoutube">
-</div>
+            <h3> Veille Youtube </h3>
 
-<div class="imageyoutube">
-    <label for="imageyoutube"> Insérer une Image Youtube : </label>
-    <input type="text" placeholder="Inserer une image youtube" id="imageyoutube" name="imageyoutube">
-</div>
-</form>
+            <form method="POST" id="formveilleyoutube" name="formveilleyoutube">
+                <input type="submit" name="formveilleyoutube" id="newveilleyt" value="Ajouter une veille" />
 
-</div>
+                <div class="lienyoutube">
+                    <label for="lienyoutube"> Insérer un Lien Youtube : </label>
+                    <input type="text" placeholder="Inserer un lien youtube" id="lienyoutube" name="lienyoutube">
+                </div>
 
-<?php
+                <div class="imageyoutube">
+                    <label for="imageyoutube"> Insérer une Image Youtube : </label>
+                    <input type="text" placeholder="Inserer une image youtube" id="imageyoutube" name="imageyoutube">
+                </div>
+            </form>
 
-//affichage des données sur la page programmedaide
+        </div>
 
-$id = $_SESSION['id'];
+        <?php
 
-$requetesql = "SELECT id, user_id, lien, image FROM veilleyoutube WHERE user_id='$id'";
-$affichage = $bdd->prepare($requetesql);
-$affichage->execute();
-$tableauDonnees = $affichage->fetchAll(PDO::FETCH_ASSOC);
+        //affichage des données sur la page programmedaide
 
-if(count($tableauDonnees) === 0)
-{
-    echo"<p>Aucune donnée à afficher</p>";
+        $id = $_SESSION['id'];
 
-} else
-{
-    foreach ($tableauDonnees as $code)
-    {
-        $images = $code["image"];
-        $liens = $code["lien"];
+        $requetesql = "SELECT id, user_id, lien, image FROM veilleyoutube WHERE user_id='$id'";
+        $affichage = $bdd->prepare($requetesql);
+        $affichage->execute();
+        $tableauDonnees = $affichage->fetchAll(PDO::FETCH_ASSOC);
 
-        echo"<div class='affichageveilleyt'>";
-        echo"<div id='positionnementyt'>";
-        echo"<div id='affichageyt'>";
-        echo'<img src="'.$images.'"/>';
-//      echo"<div id='liens'>";
-//      echo"{$code["lien"]}";
-        echo'<a href="'.$liens.'"> Lien vers ma veille </a>';
-//      echo"</div>";
-//      echo"<a href='programmedaide.php'><button type='submit'                 
-//      name='supprimerveille'> <img src='images/croix.png'></button></a>";
-        echo"<form method='post' name='supprimerveilleyt'> 
-            <input type='submit' name='supprimerveilleyt' id='croixyt' value='X' src='images/croix.png'/>
-            </form>";
-        echo"</div>";
-        echo"</div>";
-        echo"</div>";
-        
-    }
-    
-}
+        if (count($tableauDonnees) === 0) {
+            echo "<p>Aucune donnée à afficher</p>";
+        } else {
+            foreach ($tableauDonnees as $code) {
+                $images = $code["image"];
+                $liens = $code["lien"];
+                $id = $code["id"];
 
-// supprimer une veille (1 ligne de la base de donnée)
+        ?>
 
-if(isset($_POST['supprimerveilleyt'])) {
+                <div class="affichageveilleyt">
+                    <div id="positionnementyt">
+                        <div id="affichageyt">
 
-$requete = "SELECT id FROM veilleyoutube";
-$recupid = $bdd->prepare($requete);
-$recupid->execute();
-$recupid = $id;
-dump($id);
-$supprimer ="DELETE FROM veilleyoutube WHERE id = $id";
-$supp = $bdd->prepare($supprimer);
-$suppression = $supp->execute();
-echo 'Données supprimées';
+                            <img src="<?php echo $images ?>" />
 
-}
+                            <a href="<?php echo $liens ?>"> Lien vers ma veille </a>
 
-?>
+                            <form method="post" name="supprimerveilleyt">
+                                <input type="submit" src="images/croix.png" name="supprimerveilleyt" id="croixyt" value="X" />
+                                <input type="hidden" name="idveilleyt" value="<?php echo $id ?>" />
+                            </form>
 
-</section>
+                        </div>
+                    </div>
+                </div>
+
+        <?php
+
+            }
+        }
+
+        // supprimer une veilleyoutube (1 ligne de la base de donnée)
+
+        if (isset($_POST['supprimerveilleyt'])) {
+
+            $veilleidyt = $_POST['idveilleyt'];
+            $parametres = [
+                'veilleidyt' => $veilleidyt
+            ];
+
+            $supprimer = "DELETE FROM veilleyoutube WHERE id= :veilleidyt;";
+            $supp = $bdd->prepare($supprimer);
+            $suppression = $supp->execute($parametres);
+            echo 'Données supprimées';
+            dump($_POST);
+        }
+
+
+        ?>
+
+    </section>
 </div>
 
 
@@ -292,7 +337,3 @@ echo 'Données supprimées';
 require("../footer.php")
 
 ?>
-
-
-
-
