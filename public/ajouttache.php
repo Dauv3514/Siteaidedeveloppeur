@@ -22,7 +22,6 @@ if(isset($_POST['formtache'])){
         and !empty($_POST['deadline'])
 
     ) {
-        echo "ok";
 
 
         $titre = htmlspecialchars($_POST['titre']);
@@ -33,6 +32,7 @@ if(isset($_POST['formtache'])){
 
         $nouvelletache = $bdd->prepare("INSERT INTO todolist(titre, description, photo, deadline, id, user_id) VALUES(?,?,?,?,?,?)");
         $nouvelletache->execute(array($titre, $description, $photo, $deadline, $id, $user_id));
+
         header("Location: programmedaide.php");
 
     

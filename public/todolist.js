@@ -16,17 +16,45 @@ function cacher(){
 
 }
 
-/* function deplacer(){
+function deplacerafaire(){ 
 
-    var el1 = document.getElementById('contenu');
-    var el2 = document.getElementById('texteafaire');
-    $("#contenu").appendTo("#texteafaire");
+    let taches = document.getElementById('lestaches');
+    let afaire = document.getElementById('afaire');
+    console.log(afaire);
+    afaire.appendChild(taches); 
 
-} 
+}
 
-$("#appendTo").click(function() {
-    $("#contenu").appendTo($("#texteafaire"));
-}); */
+function deplacerencours(){ 
+
+    let taches = document.getElementById('lestaches');
+    let encours = document.getElementById('encours');
+    console.log(encours);
+    encours.appendChild(taches); 
+
+}
+
+function deplacertermine(){ 
+
+    let taches = document.getElementById('lestaches');
+    let termine = document.getElementById('termine');
+    console.log(termine);
+    termine.appendChild(taches); 
+
+}
+
+let taches = document.querySelector('.lestaches');
+let tache = document.querySelector('.taches');
+taches.addEventListener('dragstart', dragStart);
+taches.addEventListener('dragend', dragEnd);
+
+function dragStart() {
+    console.log("start");
+}
+function dragEnd() {
+    console.log("end");
+}
+
 
 
 

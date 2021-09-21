@@ -235,7 +235,7 @@
   justify-content: center;
 }
 
-.code {
+#lestaches {
   height: 200px;
   width: 300px;
   margin-top: 20px;
@@ -247,36 +247,39 @@
   justify-content: center;
 }
 
-.taches {
-  height: 400px;
+#taches {
+  height: 930px;
   width: 300px;
   border: 2px solid red;
 }
-
-.afaire {
-  height: 500px;
-  width: 300px;
-  border: 2px solid black;
-}
-.afaire p {
+#taches p {
   text-align: center;
 }
 
-.encours {
+#afaire {
   height: 500px;
   width: 300px;
   border: 2px solid black;
 }
-.encours p {
+#afaire p {
   text-align: center;
 }
 
-.termine {
+#encours {
   height: 500px;
   width: 300px;
   border: 2px solid black;
 }
-.termine p {
+#encours p {
+  text-align: center;
+}
+
+#termine {
+  height: 500px;
+  width: 300px;
+  border: 2px solid black;
+}
+#termine p {
   text-align: center;
 }
 
@@ -346,6 +349,17 @@
 #newveilleyt {
   margin-bottom: 30px;
   margin-top: 20px;
+}
+
+.galerie {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+#taillephoto {
+  height: 450px;
+  width: 600px;
 }
 
 /*# sourceMappingURL=style.css.map */

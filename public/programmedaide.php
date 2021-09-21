@@ -45,47 +45,74 @@ dump($tableauDonnees);
 
     <div class="placement">
 
-        <div class="taches">
+        <div id="taches">
+
+        <p> Mes tâches </p>
+
             <?php
 
             if (count($tableauDonnees) === 0) {
                 echo "<p>Aucune donnée à afficher</p>";
             } else
             {
-            foreach ($tableauDonnees as $code)
+            foreach ($tableauDonnees as $task)
             {
         
-                $photos = $code["photo"];
+                $photos = $task["photo"];
+                $id = $task["id"];
+
+            ?>
         
-                echo"<div class='code'>";
-                echo"<div id='contenu' style='display:block;'>";
-                echo"{$code["titre"]}<br>";
-                echo'<img src="'.$photos.'"/>';
-                echo"{$code["deadline"]}<br>";
-                echo"{$code["description"]}<br>";
-                echo"</div>";
-                echo"<button onclick='cacher();'> Déplacer vers le tableau A faire </button>";
-                echo"<button name='button' id='encours'> Déplacer vers le tableau En cours </button>";
-                echo"<button name='button' id='termine'> Déplacer vers le tableau Terminé </button>";
-                echo"</div>";
+                <div id="lestaches" draggable="true"> 
+                <div id="contenu">
+                <?= $task["titre"]; ?><br>
+                <img src="<?= $photos; ?>"/>
+                <?= $task["deadline"]; ?><br>
+                <?= $task["description"];?><br>
+                </div>
+                <button onclick="deplacerafaire();"> A faire </button>
+                <button onclick="deplacerencours();"> En cours </button>
+                <button onclick="deplacertermine();"> Terminé </button>
+                <form method="post" name="supprimertache">
+                <input type="submit" name="supprimertache" value="Supprimer" />
+                <input type="hidden" name="supprimer" value="<?= htmlentities($id) ;?>"/>
+                </form>
+                </div>
+
+            
+
+            <?php
                 
             }
             }
+
+            if (isset($_POST['supprimertache'])) {
+
+                $supprimer = $_POST['supprimer'];
+                $params = [
+                    'supprimert' => $supprimer
+                ];
+    
+                $suppressionbdd = "DELETE FROM todolist WHERE id= :supprimert;";
+                $suppressiontache = $bdd->prepare($suppressionbdd);
+                $sup = $suppressiontache->execute($params);
+                dump($sup);
+                dump($_POST);
+            } 
 
             ?>
 
         </div>
 
-        <div class="afaire">
+        <div id="afaire">
             <p> A faire </p>
-            <div id="texteafaire"></div>
         </div>
 
-        <div class="encours">
+        <div id="encours">
             <p> En cours </p>
         </div>
 
-        <div class="termine">
+        <div id="termine">
             <p> Terminé </p>
         </div>
 
@@ -328,9 +355,76 @@ dump($tableauDonnees);
 </div>
 
 
+    <section class="inspirationsdesign">
+
+    <div class="galerie">
+    
+    <div class="galerieimage">
+
+    <h1> Mes inspirations design </h1>
+
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="fichier" accept='image/png, image/jpeg'/> <br><br>
+        <input type="submit" value="Charger l'image">
+    </form>
+    <?php
+
+    $selectsql = $bdd->prepare('SELECT url_fichier, nom FROM galerieimages');
+    $selectsql->execute(array($fichier, $fichier_destination));
+    $afficherimages = $selectsql->fetchAll();
+    dump($afficherimages);
+
+
+
+
+        if (count($afficherimages) === 0) {
+            echo "<p>Aucune donnée à afficher</p>";
+        } else {
+            foreach ($afficherimages as $images) {
+            $lenom = $images["nom"];
+            echo '<img id="taillephoto" src="'.$lenom.'">';
+            
+            }
+        }
+
+    ?>
+
+    </div>
+
+    <?php
+        dump($_FILES);
+
+        if(!empty($_FILES)){
+
+            $fichier = $_FILES['fichier']['name'];
+            $extensions_fichier = strrchr($fichier, ".");
+            $extensions_autorisees = array('.png', '.PNG','jpeg','JPEG');
+            $fichier_tmp_name = $_FILES['fichier']['tmp_name'];
+            $fichier_destination = 'fichiers/'.$fichier;
+
+            if(in_array($extensions_fichier, $extensions_autorisees)){
+                if(move_uploaded_file($fichier_tmp_name, $fichier_destination)){
+
+                $user_id = $_SESSION['id'];
+
+                $requete = $bdd->prepare('INSERT INTO galerieimages(user_id, url_fichier, nom) VALUES (?,?,?)');
+                $requete->execute(array($user_id, $fichier, $fichier_destination));
+                dump($requete);
+                echo'Fichier envoyé avec succès';
+            }
+            } else {
+                echo 'Seuls les fichiers png et jpeg sont autorisés';
+            }
+        }
+    ?>
+
+    </section>
+
+
 <script type="text/javascript" src="veille.js"></script>
 <script type="text/javascript" src="veilleyt.js"></script>
 <script type="text/javascript" src="todolist.js"></script>
+<script type="text/javascript" src="galerieimage.js"></script>
 
 <?php
 
