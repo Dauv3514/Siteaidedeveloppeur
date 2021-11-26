@@ -557,3 +557,23 @@
     width: 600px;
 
 }
+
+/* page d'edition du profil' */
+
+.editionprofil {
+
+    display: flex;
+    justify-content: center;
+
+}
+
+.containerprofil {
+
+    height: 600px ;
+    width: 600px;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}

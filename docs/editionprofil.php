@@ -6,6 +6,9 @@ require '../vendor/autoload.php';
 
 include 'database.php';
 
+require("../header.php");
+
+
 // On récupère (on fait un select) les champs contenus dans la table "users" d'un utilisateur (identifiant, mot de passe, email...). Ensuite on peut les afficher dans les inputs avec un Echo
 
 
@@ -16,15 +19,16 @@ if (isset($_SESSION['id'])) {
     $requete->execute([$_SESSION['id']]);
     $utilisateur = $requete->fetch();
 
-
     // condition qui permet de modifier le profil de l'utilisateur
 
     if (isset($_POST['email']) and !empty($_POST['newemail']) and ($_POST['newemail']) != $utilisateur['email']); {
+
         $newemail = ($_POST['newemail']);
         $insertemail = $bdd->prepare("UPDATE users SET email = ? WHERE id = ? ");
         $insertemail->execute(array($newemail, $_SESSION['id']));
 
-        
+    // header('Location: profil.php?id='.$_SESSION['id']);
+
     }
 
     if (isset($_POST['motdepasse']) and !empty($_POST['newmotdepasse']) and ($_POST['newmotdepasse']) != $utilisateur['motdepasse']); {
@@ -34,6 +38,7 @@ if (isset($_SESSION['id'])) {
         $insertmotdepasse->execute(array($newmotdepasse, $_SESSION['id']));
 
 
+
     }
 
     if (isset($_POST['nom']) && !empty($_POST['newnom']) && ($_POST['newnom']) != $utilisateur['nom']); {
@@ -41,7 +46,7 @@ if (isset($_SESSION['id'])) {
         $insertnom = $bdd->prepare("UPDATE users SET nom = ? WHERE id = ? ");
         $insertnom->execute(array($newnom, $_SESSION['id']));
 
-        
+
     }
 
 
@@ -52,6 +57,7 @@ if (isset($_SESSION['id'])) {
         $insertprenom->execute(array($newprenom, $_SESSION['id']));
 
 
+
     }
 
     if (isset($_POST['avatar']) and !empty($_POST['newavatar']) and ($_POST['newavatar']) != $utilisateur['avatar']); {
@@ -60,50 +66,62 @@ if (isset($_SESSION['id'])) {
         $insertavatar = $bdd->prepare("UPDATE users SET avatar = ? WHERE id = ?");
         $insertavatar->execute(array($newavatar, $_SESSION['id']));
 
+        
 
     }
 
     
-    header('Location: /profil.php?id=' . $_SESSION['id']);
 
-    exit();
 
 
 ?>
 
+
+    <div id="centrageimage">
+    <img src="images/logodev.png" alt="Logo du site" />
+    </div>
     <div class="editionprofil">
 
-        <h2> Edition de mon profil </h2>
-        <form method="POST" action="">
-            <label> Mail:</label>
-            <input type="email" name="newemail" placeholder="Entrez un nouveau Mail" value="<?php echo $utilisateur['email'] ?>" />
-            <br><br>
-            <label> Mot de passe :</label>
-            <input type="password" name="newmotdepasse" placeholder="Entrez un nouveau Mot de passe" value="<?php echo $utilisateur['motdepasse'] ?>" />
-            <br><br>
-            <label> Nom :</label>
-            <input type="text" name="newnom" placeholder="Entrez un nouveau Nom" value="<?php echo $utilisateur['nom'] ?>" />
-            <br><br>
-            <label> Prénom :</label>
-            <input type="text" name="newprenom" placeholder="Entrez un nouveau Prénom" value="<?php echo $utilisateur['prenom'] ?>" />
-            <br><br>
-            <label> Avatar :</label>
-            <input type="text" name="newavatar" placeholder="Entrez un nouvel avatar" value="<?php echo $utilisateur['avatar'] ?>" />
-            <br><br>
-            <input type="submit" name="modificationprofil" value="Mettre à jour mon profil" />
-            <a href="'/profil.php?id=' . $_SESSION['id']"> Revenir à mon profil </a>
-        </form>
+        <br><br>
+        <div class="containerprofil">
+            
+            <div class="containerprofil2">
 
+                <h2> Editer de mon profil </h2>
+                <form method="POST" action="">
+                    <label> Mail:</label>
+                    <input type="email" name="newemail" placeholder="Entrez un nouveau Mail" value="<?php echo $utilisateur['email'] ?>" />
+                    <br><br>
+                    <label> Mot de passe :</label>
+                    <input type="password" name="newmotdepasse" placeholder="Entrez un nouveau Mot de passe" value="<?php echo $utilisateur['motdepasse'] ?>" />
+                    <br><br>
+                    <label> Nom :</label>
+                    <input type="text" name="newnom" placeholder="Entrez un nouveau Nom" value="<?php echo $utilisateur['nom'] ?>" />
+                    <br><br>
+                    <label> Prénom :</label>
+                    <input type="text" name="newprenom" placeholder="Entrez un nouveau Prénom" value="<?php echo $utilisateur['prenom'] ?>" />
+                    <br><br>
+                    <label> Avatar :</label>
+                    <input type="text" name="newavatar" placeholder="Entrez un nouvel avatar" value="<?php echo $utilisateur['avatar'] ?>" />
+                    <br><br>
+                    <input type="submit" name="modificationprofil" value="Mettre à jour mon profil" />
+                    <br><br>
+                    <a href="/profil.php?id=<?php echo $_SESSION['id']?>"> Revenir à mon profil </a>
+                </form>
 
+            </div>
+        </div>
+    </div>
     </div>
 
 <?php
+
+    // exit();
 
 } else {
 
     header("Location: connexion.php");
     exit();
-
 }
 
 ?>

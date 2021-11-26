@@ -20,6 +20,9 @@ if($requestUri === '/programmedaide.php') {
 if($requestUri === '/ajouttache.php') {
     $isMenu = false;
 }
+if($requestUri === '/editionprofil.php') {
+    $isMenu = false;
+}
 
 ?>
 

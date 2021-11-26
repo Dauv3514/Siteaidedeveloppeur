@@ -16,10 +16,8 @@ $getid = intval($_GET['id']);
 
 $recupererprofil = $bdd->prepare('SELECT * FROM users WHERE id = ?');
 $recupererprofil->execute(array($getid));
-var_dump($getid);
 
 $afficherprofil = $recupererprofil->fetch();
-var_dump($afficherprofil);
 
 } else {
 
@@ -53,8 +51,10 @@ var_dump($afficherprofil);
     }
     ?>
 
+    <div class="accueil">
     <h1> DEV ME - Outil d'aide à la conception de sites </h1>
     <img src="images/arriereplandevme.jpg">
+    </div>
     
 </div>
 
